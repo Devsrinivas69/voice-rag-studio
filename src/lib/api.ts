@@ -1,9 +1,4 @@
-import {
-  RagApiError,
-  ragResponseSchema,
-  type LanguageCode,
-  type RagResponse,
-} from "@/types/api";
+import { RagApiError, ragResponseSchema, type LanguageCode, type RagResponse } from "@/types/api";
 import { extensionForMime } from "@/lib/audio";
 import { demoResponse } from "@/lib/demo";
 

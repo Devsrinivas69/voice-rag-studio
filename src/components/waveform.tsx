@@ -12,10 +12,7 @@ export function Waveform({ levels }: { levels: number[] }) {
   }
 
   return (
-    <div
-      className="flex h-10 items-center justify-center gap-[2px]"
-      aria-hidden="true"
-    >
+    <div className="flex h-10 items-center justify-center gap-[2px]" aria-hidden="true">
       {data.map((v, i) => (
         <span
           key={i}

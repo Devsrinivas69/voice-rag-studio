@@ -16,7 +16,8 @@ export const Route = createFileRoute("/architecture")({
       { property: "og:title", content: "Architecture — HHGOA Voice RAG" },
       {
         property: "og:description",
-        content: "Voice to grounded answer: STT, hybrid retrieval, RRF, reranking, generation, grounding.",
+        content:
+          "Voice to grounded answer: STT, hybrid retrieval, RRF, reranking, generation, grounding.",
       },
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -96,7 +97,10 @@ function ArchitecturePage() {
           An independent demo project. Informational only — no retrieval runs on this page.
         </p>
 
-        <section aria-label="Pipeline diagram" className="mt-12 border border-border bg-card/40 p-6">
+        <section
+          aria-label="Pipeline diagram"
+          className="mt-12 border border-border bg-card/40 p-6"
+        >
           <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {FLOW.map((step, i) => (
               <li key={step} className="flex items-center gap-3">

@@ -90,8 +90,7 @@ export function useVoiceRecorder({ onComplete, onError }: Options) {
     try {
       const Ctx: typeof AudioContext =
         window.AudioContext ??
-        (window as unknown as { webkitAudioContext: typeof AudioContext })
-          .webkitAudioContext;
+        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       const ctx = new Ctx();
       audioCtxRef.current = ctx;
       const analyser = ctx.createAnalyser();

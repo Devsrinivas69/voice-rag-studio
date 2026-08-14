@@ -37,7 +37,8 @@ export function LatencyPanel({ latency }: { latency: LatencyMetrics }) {
         {PRIMARY.map(([key, label]) => (
           <Metric key={key} label={label} value={latency[key]} />
         ))}
-        {open && DETAIL.map(([key, label]) => <Metric key={key} label={label} value={latency[key]} />)}
+        {open &&
+          DETAIL.map(([key, label]) => <Metric key={key} label={label} value={latency[key]} />)}
       </div>
       <div className="mt-3 flex items-center justify-between">
         <button

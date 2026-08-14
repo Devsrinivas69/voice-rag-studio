@@ -10,9 +10,7 @@ export function TranscriptPanel({ transcript }: { transcript: string }) {
         </h2>
         <CopyButton value={transcript} label="Copy transcript" />
       </div>
-      <p className="mt-3 font-display text-2xl leading-snug text-foreground">
-        “{transcript}”
-      </p>
+      <p className="mt-3 font-display text-2xl leading-snug text-foreground">“{transcript}”</p>
     </section>
   );
 }

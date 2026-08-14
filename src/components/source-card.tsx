@@ -9,7 +9,6 @@ interface Props extends Partial<Source> {
   text: string;
 }
 
-
 export function SourceCard({ index, id, text, score, language, strategy, metadata }: Props) {
   const [open, setOpen] = useState(false);
   const excerpt = text.length > 140 ? `${text.slice(0, 140)}…` : text;

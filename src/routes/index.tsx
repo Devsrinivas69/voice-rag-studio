@@ -32,7 +32,8 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "HHGOA Voice RAG — Speak. Retrieve. Verify." },
       {
         property: "og:description",
-        content: "Ask the dataset with your voice. Grounded answers with evidence and latency metrics.",
+        content:
+          "Ask the dataset with your voice. Grounded answers with evidence and latency metrics.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

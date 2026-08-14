@@ -36,7 +36,10 @@ export function MarkdownText({ text }: { text: string }) {
           return (
             <ul key={bi} className="space-y-2 pl-4">
               {lines.map((l, li) => (
-                <li key={li} className="list-disc text-[0.975rem] leading-relaxed marker:text-primary">
+                <li
+                  key={li}
+                  className="list-disc text-[0.975rem] leading-relaxed marker:text-primary"
+                >
                   {inline(l.replace(/^\s*[-*]\s+/, ""))}
                 </li>
               ))}

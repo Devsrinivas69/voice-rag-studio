@@ -7,10 +7,7 @@ function delay(ms: number) {
 }
 
 /** Mocked backend response. Only ever used when VITE_DEMO_MODE === "true". */
-export async function demoResponse(
-  language: LanguageCode,
-  query?: string,
-): Promise<RagResponse> {
+export async function demoResponse(language: LanguageCode, query?: string): Promise<RagResponse> {
   await delay(1400);
   const transcript = query ?? "What does the dataset say about education access?";
   const offTopic = OFF_TOPIC.test(transcript);

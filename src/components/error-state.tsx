@@ -11,7 +11,9 @@ export function ErrorState({ title, message, variant = "error", onRetry }: Props
   const Icon =
     variant === "guardrail" ? ShieldAlert : variant === "no-evidence" ? SearchX : AlertTriangle;
   const tone =
-    variant === "error" ? "border-destructive/40 text-destructive" : "border-warning/40 text-warning";
+    variant === "error"
+      ? "border-destructive/40 text-destructive"
+      : "border-warning/40 text-warning";
 
   return (
     <section role="alert" className={`mt-6 border ${tone} bg-card/50 p-5`}>

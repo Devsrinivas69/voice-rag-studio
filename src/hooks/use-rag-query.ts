@@ -40,14 +40,12 @@ export function useRagQuery() {
   }, []);
 
   const submitVoice = useCallback(
-    (audio: Blob, language: LanguageCode) =>
-      run(() => ragApi.voiceQuery(audio, language), true),
+    (audio: Blob, language: LanguageCode) => run(() => ragApi.voiceQuery(audio, language), true),
     [run],
   );
 
   const submitText = useCallback(
-    (query: string, language: LanguageCode) =>
-      run(() => ragApi.textQuery(query, language), false),
+    (query: string, language: LanguageCode) => run(() => ragApi.textQuery(query, language), false),
     [run],
   );
 

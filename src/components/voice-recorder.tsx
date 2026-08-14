@@ -73,7 +73,9 @@ export function VoiceRecorder({
             </p>
           </>
         ) : (
-          <p className="label-mono text-foreground">{supported ? label : "Voice unsupported — use text"}</p>
+          <p className="label-mono text-foreground">
+            {supported ? label : "Voice unsupported — use text"}
+          </p>
         )}
       </div>
 
