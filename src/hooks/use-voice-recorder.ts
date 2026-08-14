@@ -116,7 +116,7 @@ export function useVoiceRecorder({ onComplete, onError }: Options) {
     const startedAt = Date.now();
     timerRef.current = setInterval(() => setElapsedMs(Date.now() - startedAt), 200);
     maxTimeoutRef.current = setTimeout(() => {
-      recorderRef.current?.state === "recording" && recorderRef.current.stop();
+      if (recorderRef.current?.state === "recording") recorderRef.current.stop();
     }, MAX_RECORDING_MS);
   }, [cleanup, onComplete, onError]);
 
