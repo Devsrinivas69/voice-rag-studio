@@ -15,7 +15,7 @@ const DETAIL: Array<[keyof LatencyMetrics, string]> = [
   ["grounding", "Grounding"],
 ];
 
-function Metric({ label, value }: { label: string; value?: number }) {
+function Metric({ label, value }: { label: string; value: number | undefined }) {
   return (
     <div className="flex items-baseline justify-between gap-4 border-b border-border py-2">
       <span className="label-mono">{label}</span>

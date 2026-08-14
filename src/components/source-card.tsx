@@ -3,9 +3,12 @@ import { ChevronDown } from "lucide-react";
 import { CopyButton } from "@/components/copy-button";
 import type { Source } from "@/types/api";
 
-interface Props extends Source {
+interface Props extends Partial<Source> {
   index: number;
+  id: string;
+  text: string;
 }
+
 
 export function SourceCard({ index, id, text, score, language, strategy, metadata }: Props) {
   const [open, setOpen] = useState(false);
