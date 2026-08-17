@@ -19,22 +19,22 @@ Sarvam STT · Qdrant · BM25 · LLM
 
 ## Components
 
-| Path | Purpose |
-| --- | --- |
-| `src/components/header.tsx` | Branding, nav, health status, demo badge |
-| `src/components/voice-recorder.tsx` | Mic control + state label + duration |
-| `src/components/waveform.tsx` | Live waveform from real mic amplitude |
-| `src/components/language-selector.tsx` | 9 Indic language codes |
-| `src/components/transcript-panel.tsx` | "You asked" + copy |
-| `src/components/answer-panel.tsx` | Focal answer, grounding, confidence |
-| `src/components/source-card.tsx` / `sources-panel.tsx` | Retrieved evidence, expand/collapse |
-| `src/components/grounding-badge.tsx` | Grounded / not grounded (icon + text, not colour alone) |
-| `src/components/latency-panel.tsx` | Measured metrics, `—` when missing |
-| `src/components/pipeline-status.tsx` | Stage states: idle / processing / complete / error |
-| `src/components/request-id.tsx` | Debug reference + copy |
-| `src/components/example-prompts.tsx` | Empty state; fills the text fallback only |
-| `src/components/error-state.tsx` | Error, guardrail and no-evidence states |
-| `src/components/text-fallback.tsx` | Typed query path |
+| Path                                                   | Purpose                                                 |
+| ------------------------------------------------------ | ------------------------------------------------------- |
+| `src/components/header.tsx`                            | Branding, nav, health status, demo badge                |
+| `src/components/voice-recorder.tsx`                    | Mic control + state label + duration                    |
+| `src/components/waveform.tsx`                          | Live waveform from real mic amplitude                   |
+| `src/components/language-selector.tsx`                 | 9 Indic language codes                                  |
+| `src/components/transcript-panel.tsx`                  | "You asked" + copy                                      |
+| `src/components/answer-panel.tsx`                      | Focal answer, grounding, confidence                     |
+| `src/components/source-card.tsx` / `sources-panel.tsx` | Retrieved evidence, expand/collapse                     |
+| `src/components/grounding-badge.tsx`                   | Grounded / not grounded (icon + text, not colour alone) |
+| `src/components/latency-panel.tsx`                     | Measured metrics, `—` when missing                      |
+| `src/components/pipeline-status.tsx`                   | Stage states: idle / processing / complete / error      |
+| `src/components/request-id.tsx`                        | Debug reference + copy                                  |
+| `src/components/example-prompts.tsx`                   | Empty state; fills the text fallback only               |
+| `src/components/error-state.tsx`                       | Error, guardrail and no-evidence states                 |
+| `src/components/text-fallback.tsx`                     | Typed query path                                        |
 
 Hooks: `src/hooks/use-voice-recorder.ts`, `src/hooks/use-rag-query.ts`.
 Lib: `src/lib/api.ts`, `src/lib/audio.ts`, `src/lib/demo.ts`.
@@ -62,9 +62,9 @@ Malformed payloads surface "Received an invalid response from the RAG service." 
 
 ## Environment variables
 
-| Variable | Meaning |
-| --- | --- |
-| `VITE_API_URL` | FastAPI base URL, e.g. `http://localhost:8000` |
+| Variable         | Meaning                                               |
+| ---------------- | ----------------------------------------------------- |
+| `VITE_API_URL`   | FastAPI base URL, e.g. `http://localhost:8000`        |
 | `VITE_DEMO_MODE` | `true` serves mocked responses; badge shown in header |
 
 No provider secrets ever live in the frontend.

@@ -3,10 +3,10 @@ import { extensionForMime } from "@/lib/audio";
 import { demoResponse } from "@/lib/demo";
 
 export const API_BASE_URL: string =
-  (import.meta.env["VITE_API_URL"] as string | undefined) ?? "http://localhost:8000";
+  process.env.NEXT_PUBLIC_API_URL ?? process.env.VITE_API_URL ?? "http://localhost:8000";
 
 export const DEMO_MODE: boolean =
-  (import.meta.env["VITE_DEMO_MODE"] as string | undefined) === "true";
+  (process.env.NEXT_PUBLIC_DEMO_MODE ?? process.env.VITE_DEMO_MODE) === "true";
 
 const REQUEST_TIMEOUT_MS = 45_000;
 

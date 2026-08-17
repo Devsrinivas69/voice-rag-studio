@@ -1,4 +1,6 @@
-import { Link } from "@tanstack/react-router";
+"use client";
+
+import Link from "next/link";
 import { Github } from "lucide-react";
 import { DEMO_MODE } from "@/lib/api";
 
@@ -6,16 +8,16 @@ export function Header({ online }: { online: boolean | null }) {
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link to="/" className="flex items-baseline gap-2">
+        <Link href="/" className="flex items-baseline gap-2">
           <span className="font-mono text-sm font-semibold tracking-[0.22em]">HHGOA</span>
           <span className="text-sm text-muted-foreground">Voice RAG</span>
         </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-6 sm:flex">
-          <Link to="/" className="label-mono hover:text-foreground">
+          <Link href="/" className="label-mono hover:text-foreground">
             Demo
           </Link>
-          <Link to="/architecture" className="label-mono hover:text-foreground">
+          <Link href="/architecture" className="label-mono hover:text-foreground">
             Architecture
           </Link>
           <a

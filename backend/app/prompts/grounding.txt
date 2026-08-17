@@ -1,0 +1,3 @@
+Evaluate if the generated answer is strictly supported by the retrieved context.
+Check every claim in the answer against the provided evidence chunks.
+Return JSON with fields: grounded (boolean), unsupported_claims (list of strings), confidence (float).

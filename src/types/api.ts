@@ -15,25 +15,37 @@ export const LANGUAGES = [
 export type LanguageCode = (typeof LANGUAGES)[number]["code"];
 
 export const sourceSchema = z.object({
-  id: z.string(),
-  text: z.string(),
+  id: z.string().optional(),
+  chunk_id: z.string().optional(),
+  document_id: z.string().optional(),
+  text: z.string().default(""),
   score: z.number().optional(),
   language: z.string().optional(),
   strategy: z.string().optional(),
-  metadata: z.record(z.union([z.string(), z.number(), z.boolean()])).optional(),
+  metadata: z.record(z.any()).optional(),
 });
 export type Source = z.infer<typeof sourceSchema>;
 
 export const latencySchema = z.object({
   stt: z.number().optional(),
+  stt_ms: z.number().optional(),
   embedding: z.number().optional(),
+  embedding_ms: z.number().optional(),
   dense_retrieval: z.number().optional(),
+  dense_retrieval_ms: z.number().optional(),
   bm25: z.number().optional(),
+  bm25_ms: z.number().optional(),
   fusion: z.number().optional(),
+  fusion_ms: z.number().optional(),
   rerank: z.number().optional(),
+  reranking_ms: z.number().optional(),
+  context_building_ms: z.number().optional(),
   llm: z.number().optional(),
+  llm_ms: z.number().optional(),
   grounding: z.number().optional(),
+  grounding_ms: z.number().optional(),
   total: z.number().optional(),
+  total_backend_ms: z.number().optional(),
 });
 export type LatencyMetrics = z.infer<typeof latencySchema>;
 
@@ -45,7 +57,8 @@ export type ErrorResponse = z.infer<typeof errorResponseSchema>;
 
 export const ragResponseSchema = z.object({
   success: z.boolean(),
-  transcript: z.string().default(""),
+  request_id: z.string().default(""),
+  transcript: z.string().nullable().optional().default(""),
   answer: z.string().default(""),
   grounded: z.boolean().default(false),
   confidence: z.number().optional(),
@@ -53,7 +66,6 @@ export const ragResponseSchema = z.object({
   blocked: z.boolean().optional(),
   sources: z.array(sourceSchema).default([]),
   latency: latencySchema.default({}),
-  request_id: z.string().default(""),
   error: errorResponseSchema.optional(),
 });
 export type RagResponse = z.infer<typeof ragResponseSchema>;

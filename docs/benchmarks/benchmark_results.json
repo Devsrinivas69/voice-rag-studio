@@ -1,0 +1,54 @@
+{
+  "timestamp": 1786708245.9949236,
+  "num_queries_evaluated": 50,
+  "input_dataset": "data/msmarco_xi_kn.json",
+  "language": "kn",
+  "latency_percentiles_ms": {
+    "dense_retrieval_ms": {
+      "P50": 97.97,
+      "P70": 100.94,
+      "P100": 9866.31
+    },
+    "bm25_ms": {
+      "P50": 31.72,
+      "P70": 32.7,
+      "P100": 37.57
+    },
+    "fusion_ms": {
+      "P50": 0.08,
+      "P70": 0.08,
+      "P100": 0.09
+    },
+    "rerank_ms": {
+      "P50": 0.0,
+      "P70": 0.0,
+      "P100": 0.0
+    },
+    "llm_ms": {
+      "P50": 0.0,
+      "P70": 0.0,
+      "P100": 0.01
+    },
+    "grounding_ms": {
+      "P50": 0.44,
+      "P70": 0.46,
+      "P100": 0.62
+    },
+    "total_backend_ms": {
+      "P50": 128.97,
+      "P70": 133.05,
+      "P100": 9905.62
+    }
+  },
+  "retrieval_accuracy": {
+    "Recall@5": 0.72,
+    "Recall@10": 0.9,
+    "Mean_Reciprocal_Rank_MRR": 0.6587
+  },
+  "grounding_quality": {
+    "groundedness_pass_rate_percent": 100.0,
+    "refusal_rate_percent": 0.0,
+    "prompt_injection_blocked_percent": 0.0
+  },
+  "benchmark_execution_time_ms": 20336.39
+}

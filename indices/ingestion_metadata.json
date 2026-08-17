@@ -1,0 +1,10 @@
+{
+  "timestamp": 1786708203.884475,
+  "input_file": "data/msmarco_xi_kn.json",
+  "total_documents": 50,
+  "total_chunks": 498,
+  "embedding_model": "BAAI/bge-m3",
+  "embedding_dimension": 1024,
+  "qdrant_collection": "msmarco_xi",
+  "bm25_index_path": "indices/bm25_index.pkl"
+}
