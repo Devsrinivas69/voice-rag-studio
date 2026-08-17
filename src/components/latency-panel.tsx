@@ -17,16 +17,20 @@ const DETAIL: Array<[string, string]> = [
 ];
 
 function getValue(latency: LatencyMetrics, key: string): number | undefined {
-  if (key === "total") return latency.total ?? latency.total_backend_ms;
-  if (key === "stt") return latency.stt ?? latency.stt_ms;
-  if (key === "dense_retrieval") return latency.dense_retrieval ?? latency.dense_retrieval_ms;
-  if (key === "rerank") return latency.rerank ?? latency.reranking_ms;
-  if (key === "llm") return latency.llm ?? latency.llm_ms;
-  if (key === "embedding") return latency.embedding ?? latency.embedding_ms;
-  if (key === "bm25") return latency.bm25 ?? latency.bm25_ms;
-  if (key === "fusion") return latency.fusion ?? latency.fusion_ms;
-  if (key === "context_building") return latency.context_building_ms;
-  if (key === "grounding") return latency.grounding ?? latency.grounding_ms;
+  const getNum = (v: number | null | undefined): number | undefined =>
+    typeof v === "number" ? v : undefined;
+
+  if (key === "total") return getNum(latency.total) ?? getNum(latency.total_backend_ms);
+  if (key === "stt") return getNum(latency.stt) ?? getNum(latency.stt_ms);
+  if (key === "dense_retrieval")
+    return getNum(latency.dense_retrieval) ?? getNum(latency.dense_retrieval_ms);
+  if (key === "rerank") return getNum(latency.rerank) ?? getNum(latency.reranking_ms);
+  if (key === "llm") return getNum(latency.llm) ?? getNum(latency.llm_ms);
+  if (key === "embedding") return getNum(latency.embedding) ?? getNum(latency.embedding_ms);
+  if (key === "bm25") return getNum(latency.bm25) ?? getNum(latency.bm25_ms);
+  if (key === "fusion") return getNum(latency.fusion) ?? getNum(latency.fusion_ms);
+  if (key === "context_building") return getNum(latency.context_building_ms);
+  if (key === "grounding") return getNum(latency.grounding) ?? getNum(latency.grounding_ms);
   return undefined;
 }
 

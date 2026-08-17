@@ -13,7 +13,7 @@ export function SourcesPanel({ sources }: { sources: Source[] }) {
       </div>
       <div className="mt-4 space-y-3">
         {sources.map((s, i) => {
-          const keyId = s.chunk_id ?? s.id ?? `source_${i}`;
+          const keyId = s.chunk_id || s.id || `source_${i}`;
           return <SourceCard key={`${keyId}_${i}`} index={i} id={keyId} {...s} />;
         })}
       </div>

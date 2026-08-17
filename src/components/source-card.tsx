@@ -5,7 +5,7 @@ import type { Source } from "@/types/api";
 
 interface Props extends Partial<Source> {
   index: number;
-  id: string;
+  id?: string | null;
   text: string;
 }
 
