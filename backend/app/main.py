@@ -17,20 +17,30 @@ app = FastAPI(
     title="HHGOA 2026 — Voice-Enabled RAG API",
     description="Production-quality multilingual Voice Retrieval-Augmented Generation backend.",
     version="1.0.0",
-    docs_url="/docs" if settings.DEBUG or settings.ENVIRONMENT == "development" else None,
-    redoc_url="/redoc" if settings.DEBUG or settings.ENVIRONMENT == "development" else None,
+    docs_url="/docs",
+    redoc_url="/redoc",
 )
 
-# CORS Configuration
-allowed_origins = [settings.FRONTEND_URL, "http://localhost:3000", "http://127.0.0.1:3000"]
-
+# Allow CORS for Next.js frontend and API clients
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.get("/", tags=["Root"])
+async def root():
+    """GET / — Service welcome and health endpoint."""
+    return {
+        "status": "online",
+        "service": "HHGOA 2026 — Voice-Enabled RAG API",
+        "version": "1.0.0",
+        "health": "/health",
+        "docs": "/docs",
+    }
 
 
 @app.middleware("http")
