@@ -32,6 +32,10 @@ class Settings(BaseSettings):
         default="gemini-3.7-flash",
         description="Gemini Generation Model ID for answer synthesis",
     )
+    GEMINI_MODEL: str = Field(
+        default="gemini-3.7-flash",
+        description="Alias for LLM_MODEL",
+    )
     RERANKER_MODEL: str = Field(default="BAAI/bge-reranker-v2-m3", description="Reranker cross-encoder model")
     RERANKER_ENABLED: bool = Field(default=True, description="Enable reranking step")
 

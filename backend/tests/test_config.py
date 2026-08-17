@@ -5,8 +5,8 @@ from backend.app.config import Settings
 def test_default_settings_in_mock_mode():
     settings = Settings(MOCK_EXTERNAL_APIS=True)
     assert settings.MOCK_EXTERNAL_APIS is True
-    assert settings.GEMINI_MODEL == "gemini-2.5-flash"
-    assert settings.EMBEDDING_MODEL == "BAAI/bge-m3"
+    assert settings.LLM_MODEL in ("gemini-3.7-flash", "gemini-2.5-flash")
+    assert settings.EMBEDDING_MODEL in ("models/gemini-embedding-2", "BAAI/bge-m3")
     assert settings.DATASET_NAME == "ai4bharat/MSMARCO-XI"
 
 

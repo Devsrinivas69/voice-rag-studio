@@ -153,19 +153,20 @@ class QdrantService:
         language_filter: Optional[str] = None,
     ) -> List[Dict[str, Any]]:
         """Searches Qdrant for dense vector nearest neighbors with optional language payload filter."""
+        def _cosine_sim(v1: List[float], v2: List[float]) -> float:
+            dot = sum(a * b for a, b in zip(v1, v2))
+            n1 = (sum(a * a for a in v1) ** 0.5) + 1e-9
+            n2 = (sum(b * b for b in v2) ** 0.5) + 1e-9
+            return float(dot / (n1 * n2))
+
         if self.client is None:
             # Search in-memory store using cosine similarity
             store = self._in_memory_store.get(collection_name, [])
             results = []
-            query_arr = np.array(query_vector, dtype=np.float32)
-            query_norm = np.linalg.norm(query_arr) + 1e-9
-
             for item in store:
                 if language_filter and item["payload"].get("language") != language_filter:
                     continue
-                v_arr = np.array(item["vector"], dtype=np.float32)
-                v_norm = np.linalg.norm(v_arr) + 1e-9
-                sim = float(np.dot(query_arr, v_arr) / (query_norm * v_norm))
+                sim = _cosine_sim(query_vector, item["vector"])
                 results.append({"payload": item["payload"], "score": sim})
 
             results.sort(key=lambda x: x["score"], reverse=True)
@@ -214,14 +215,10 @@ class QdrantService:
             # Fallback to in-memory store search if live client fails during search
             store = self._in_memory_store.get(collection_name, [])
             results = []
-            query_arr = np.array(query_vector, dtype=np.float32)
-            query_norm = np.linalg.norm(query_arr) + 1e-9
             for item in store:
                 if language_filter and item["payload"].get("language") != language_filter:
                     continue
-                v_arr = np.array(item["vector"], dtype=np.float32)
-                v_norm = np.linalg.norm(v_arr) + 1e-9
-                sim = float(np.dot(query_arr, v_arr) / (query_norm * v_norm))
+                sim = _cosine_sim(query_vector, item["vector"])
                 results.append({"payload": item["payload"], "score": sim})
             results.sort(key=lambda x: x["score"], reverse=True)
             return results[:limit]

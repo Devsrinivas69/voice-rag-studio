@@ -3,6 +3,7 @@
   "venv": "venv",
   "pythonVersion": "3.10",
   "extraPaths": [
+    ".",
     "venv/lib/site-packages",
     "backend"
   ]
