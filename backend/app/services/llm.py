@@ -1,3 +1,4 @@
+import concurrent.futures
 from typing import Any, Dict, List, Optional
 from backend.app.config import get_settings
 from backend.app.monitoring.metrics import logger
@@ -11,7 +12,7 @@ except ImportError:
 
 
 class LLMService:
-    """Gemini LLM generation service using the official google-genai SDK."""
+    """Gemini LLM generation service using the official google-genai SDK with strict timeout protection."""
 
     def __init__(self, model_name: Optional[str] = None):
         settings = get_settings()
@@ -38,48 +39,59 @@ class LLMService:
             logger.warning(f"Could not initialize genai.Client: {err}. Operating in mock mode.")
             self.client = None
 
+    def _call_gemini_api(self, prompt_data: Dict[str, str], temperature: float) -> str:
+        """Internal helper executing Gemini API call."""
+        system_instruction = prompt_data["system_instruction"]
+        user_prompt = prompt_data["user_prompt"]
+
+        config = types.GenerateContentConfig(
+            system_instruction=system_instruction,
+            temperature=temperature,
+            max_output_tokens=1024,
+        )
+
+        response = self.client.models.generate_content(
+            model=self.model_name,
+            contents=user_prompt,
+            config=config,
+        )
+
+        return response.text.strip() if response and response.text else ""
+
     def generate_grounded_answer(
         self,
         prompt_data: Dict[str, str],
         retrieved_chunks: List[Dict[str, Any]],
         temperature: float = 0.2,
     ) -> Dict[str, Any]:
-        """Generates grounded answer using Gemini API with strict system instructions."""
-        system_instruction = prompt_data["system_instruction"]
-        user_prompt = prompt_data["user_prompt"]
-
+        """Generates grounded answer using Gemini API with 5.0s maximum timeout protection."""
         if self.client is not None:
             try:
-                config = types.GenerateContentConfig(
-                    system_instruction=system_instruction,
-                    temperature=temperature,
-                    max_output_tokens=1024,
-                )
+                # Wrap API call in thread pool executor with 5s hard timeout to prevent pipeline stalls
+                with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+                    future = executor.submit(self._call_gemini_api, prompt_data, temperature)
+                    generated_text = future.result(timeout=5.0)
 
-                response = self.client.models.generate_content(
-                    model=self.model_name,
-                    contents=user_prompt,
-                    config=config,
-                )
-
-                generated_text = response.text.strip() if response.text else ""
-                return {
-                    "answer": generated_text,
-                    "model_used": self.model_name,
-                    "mock": False,
-                }
+                if generated_text:
+                    return {
+                        "answer": generated_text,
+                        "model_used": self.model_name,
+                        "mock": False,
+                    }
+            except concurrent.futures.TimeoutError:
+                logger.warning("Gemini API call timed out (> 5.0s). Using grounded context synthesis fallback.")
             except Exception as err:
                 logger.error(f"Gemini API generation error: {err}. Falling back to grounded context synthesis.")
 
-        # Fallback grounded context synthesis for offline/mock mode
+        # Fallback grounded context synthesis for offline/mock/timeout mode
         if retrieved_chunks:
             top_passage = retrieved_chunks[0].get("text", "")
-            ans = f"ಆಧಾರಿತ ಉತ್ತರ (Grounded Answer): {top_passage[:300]}"
+            ans = f"Grounding evidence answer: {top_passage[:350]}"
         else:
             ans = "I cannot answer this question based on the provided context."
 
         return {
             "answer": ans,
-            "model_used": "mock-fallback",
+            "model_used": "grounded-fallback",
             "mock": True,
         }
