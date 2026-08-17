@@ -17,7 +17,7 @@ class GroundingEvaluator:
 
     def __init__(self, min_relevance_threshold: float = 0.010):
         settings = get_settings()
-        self.min_relevance_threshold = min_relevance_threshold or settings.GROUNDING_SIMILARITY_THRESHOLD
+        self.min_relevance_threshold = min_relevance_threshold or settings.GROUNDING_THRESHOLD
 
     def is_refusal_answer(self, answer: str) -> bool:
         """Checks if generated answer is an explicit refusal."""

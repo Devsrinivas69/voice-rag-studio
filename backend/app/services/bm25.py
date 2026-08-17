@@ -24,6 +24,11 @@ class BM25Service:
 
     def __init__(self, index_path: str = "indices/bm25_index.pkl"):
         self.index_path = index_path
+        # Also check alternative location for Docker deployments
+        self._alt_paths = [
+            "indices/bm25_index.pkl",
+            "backend/indices/bm25_index.pkl",
+        ]
         self.bm25: Optional[Any] = None
         self.chunks: List[Dict[str, Any]] = []
 
@@ -64,19 +69,27 @@ class BM25Service:
 
     def load_index(self) -> bool:
         """Loads persisted BM25 index from pickle file at application startup."""
-        if not os.path.exists(self.index_path):
-            logger.warning(f"BM25 index file '{self.index_path}' not found.")
+        # Check primary path first, then alternative paths
+        paths_to_check = [self.index_path] + [p for p in self._alt_paths if p != self.index_path]
+        found_path = None
+        for path in paths_to_check:
+            if os.path.exists(path):
+                found_path = path
+                break
+
+        if found_path is None:
+            logger.warning(f"BM25 index file not found at any of: {paths_to_check}")
             return False
 
         try:
-            with open(self.index_path, "rb") as f:
+            with open(found_path, "rb") as f:
                 data = pickle.load(f)
             self.bm25 = data.get("bm25")
             self.chunks = data.get("chunks", [])
-            logger.info(f"Successfully loaded BM25 index with {len(self.chunks)} chunks.")
+            logger.info(f"Successfully loaded BM25 index from '{found_path}' with {len(self.chunks)} chunks.")
             return True
         except Exception as err:
-            logger.error(f"Failed to load BM25 index from '{self.index_path}': {err}")
+            logger.error(f"Failed to load BM25 index from '{found_path}': {err}")
             return False
 
     def search(self, query: str, limit: int = 20, language_filter: Optional[str] = None) -> List[Dict[str, Any]]:

@@ -23,8 +23,15 @@ class Settings(BaseSettings):
     QDRANT_API_KEY: Optional[str] = Field(default=None, description="Qdrant Cloud API key (optional for local)")
     QDRANT_COLLECTION: str = Field(default="msmarco_xi", description="Qdrant collection name")
 
-    # Models & Algorithms
-    EMBEDDING_MODEL: str = Field(default="BAAI/bge-m3", description="Hugging Face sentence-transformers model")
+    # Models & API Integrations
+    EMBEDDING_MODEL: str = Field(
+        default="models/gemini-embedding-2",
+        description="Gemini Embedding 2 model for dense vector representations (768 dim)",
+    )
+    LLM_MODEL: str = Field(
+        default="gemini-3.7-flash",
+        description="Gemini Generation Model ID for answer synthesis",
+    )
     RERANKER_MODEL: str = Field(default="BAAI/bge-reranker-v2-m3", description="Reranker cross-encoder model")
     RERANKER_ENABLED: bool = Field(default=True, description="Enable reranking step")
 
@@ -37,6 +44,7 @@ class Settings(BaseSettings):
 
     # Retrieval Thresholds
     TOP_K_DENSE: int = Field(default=20, description="Number of dense vector search results")
+    TOP_K_RETRIEVAL: int = Field(default=10, description="Default number of retrieval candidates")
     TOP_K_BM25: int = Field(default=20, description="Number of BM25 lexical search results")
     TOP_K_RERANK: int = Field(default=10, description="Number of candidates to pass to reranker")
     FINAL_CONTEXT_K: int = Field(default=5, description="Number of final context chunks passed to LLM")

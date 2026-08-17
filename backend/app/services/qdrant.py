@@ -183,12 +183,23 @@ class QdrantService:
                     ]
                 )
 
-            search_res = self.client.search(
-                collection_name=collection_name,
-                query_vector=query_vector,
-                limit=limit,
-                query_filter=query_filter,
-            )
+            if hasattr(self.client, "query_points"):
+                response = self.client.query_points(
+                    collection_name=collection_name,
+                    query=query_vector,
+                    limit=limit,
+                    query_filter=query_filter,
+                )
+                search_res = response.points
+            elif hasattr(self.client, "search"):
+                search_res = self.client.search(
+                    collection_name=collection_name,
+                    query_vector=query_vector,
+                    limit=limit,
+                    query_filter=query_filter,
+                )
+            else:
+                search_res = []
 
             return [
                 {

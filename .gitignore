@@ -37,3 +37,8 @@ __pycache__/
 *.pyc
 *.pyo
 .pytest_cache/
+
+# Large Datasets & Parquet files
+backend/data/
+*.parquet
+

@@ -21,7 +21,8 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PATH=/root/.local/bin:$PATH \
     OMP_NUM_THREADS=1 \
-    MKL_NUM_THREADS=1
+    MKL_NUM_THREADS=1 \
+    DISABLE_LOCAL_TRANSFORMERS=true
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
@@ -29,6 +30,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY --from=builder /root/.local /root/.local
 COPY backend/ /app/backend/
+
+# Copy pre-built BM25 index if it exists
+COPY backend/indices/ /app/backend/indices/
 
 EXPOSE 8000
 

@@ -47,7 +47,11 @@ class HybridRetriever:
         """Executes dense + sparse search, computes RRF fusion, applies optional reranking, and tracks latencies."""
         settings = get_settings()
         limit = top_k or settings.TOP_K_RETRIEVAL
-        target_lang = (language or settings.DATASET_LANGUAGE).lower()
+        raw_lang = (language or settings.DATASET_LANGUAGE or "").lower()
+        # Normalize e.g. "en-in" -> "en", "kn-in" -> "kn"
+        target_lang = raw_lang.split("-")[0].split("_")[0] if raw_lang else None
+        if target_lang in ("all", "auto", ""):
+            target_lang = None
 
         retrieval_timer = LatencyTimer("total_retrieval_ms")
         retrieval_timer.start()
