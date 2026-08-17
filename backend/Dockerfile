@@ -7,6 +7,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
+# Install CPU-only PyTorch first to prevent downloading 3.5GB CUDA packages & save RAM
+RUN pip install --no-cache-dir --user torch --index-url https://download.pytorch.org/whl/cpu
+
 COPY backend/requirements.txt .
 RUN pip install --no-cache-dir --user -r requirements.txt
 
@@ -16,7 +19,9 @@ WORKDIR /app
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    PATH=/root/.local/bin:$PATH
+    PATH=/root/.local/bin:$PATH \
+    OMP_NUM_THREADS=1 \
+    MKL_NUM_THREADS=1
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
