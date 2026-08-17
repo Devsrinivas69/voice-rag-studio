@@ -2,8 +2,9 @@ import { RagApiError, ragResponseSchema, type LanguageCode, type RagResponse } f
 import { extensionForMime } from "@/lib/audio";
 import { demoResponse } from "@/lib/demo";
 
-export const API_BASE_URL: string =
+const rawBaseUrl =
   process.env.NEXT_PUBLIC_API_URL ?? process.env.VITE_API_URL ?? "http://localhost:8000";
+export const API_BASE_URL: string = rawBaseUrl.replace(/\/+$/, "");
 
 export const DEMO_MODE: boolean =
   (process.env.NEXT_PUBLIC_DEMO_MODE ?? process.env.VITE_DEMO_MODE) === "true";
@@ -27,16 +28,32 @@ async function request(path: string, init: RequestInit, timeout = REQUEST_TIMEOU
 
 async function parse(res: Response): Promise<RagResponse> {
   if (res.status === 401 || res.status === 403) throw new RagApiError("OFFLINE");
-  if (res.status >= 500) throw new RagApiError("OFFLINE");
-  let json: unknown;
+
+  let json: Record<string, unknown> | null = null;
   try {
-    json = await res.json();
+    json = (await res.json()) as Record<string, unknown>;
   } catch {
+    if (!res.ok) throw new RagApiError("OFFLINE");
     throw new RagApiError("INVALID_RESPONSE");
   }
+
   const parsed = ragResponseSchema.safeParse(json);
-  if (!parsed.success) throw new RagApiError("INVALID_RESPONSE");
-  return parsed.data;
+  if (parsed.success) {
+    return parsed.data;
+  }
+
+  if (json && typeof json === "object") {
+    const errObj = json.error as { message?: string } | undefined;
+    if (errObj?.message) {
+      throw new RagApiError("UNKNOWN", errObj.message);
+    }
+    if (json.detail) {
+      const msg = typeof json.detail === "string" ? json.detail : JSON.stringify(json.detail);
+      throw new RagApiError("UNKNOWN", msg);
+    }
+  }
+
+  throw new RagApiError("INVALID_RESPONSE");
 }
 
 export const ragApi = {
