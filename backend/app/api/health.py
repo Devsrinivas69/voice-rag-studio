@@ -8,13 +8,9 @@ router = APIRouter(tags=["Health"])
 
 
 @router.get("/health", response_model=HealthResponse)
-async def health_check(settings: Settings = Depends(get_app_settings)) -> HealthResponse:
-    """Liveness probe: verifies application is running without executing external network calls."""
-    return HealthResponse(
-        status="ok",
-        environment=settings.ENVIRONMENT,
-        mock_mode=settings.MOCK_EXTERNAL_APIS,
-    )
+async def health_check() -> HealthResponse:
+    """Liveness probe: lightweight endpoint for uptime monitors and orchestrators."""
+    return HealthResponse(status="ok")
 
 
 @router.get("/ready", response_model=ReadyResponse)

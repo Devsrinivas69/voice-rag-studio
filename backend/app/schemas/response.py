@@ -54,8 +54,8 @@ class StandardErrorResponse(BaseModel):
 
 class HealthResponse(BaseModel):
     status: str = "ok"
-    environment: str
-    mock_mode: bool
+    environment: Optional[str] = None
+    mock_mode: Optional[bool] = None
 
 
 class ComponentStatus(BaseModel):
